@@ -9,6 +9,7 @@ A powerful, Python-based static site generator that converts Markdown files into
 - **Static Asset Management**: Copies images, CSS, and other assets to the output directory
 - **Template System**: Uses HTML templates with placeholder substitution
 - **Development Server**: Built-in HTTP server for local development
+- **GitHub Pages Ready**: Output directory configured for easy GitHub Pages deployment
 - **Comprehensive Testing**: Full test suite with unit tests for all components
 - **Clean Architecture**: Modular design with separate concerns for parsing, generation, and output
 
@@ -36,9 +37,10 @@ StaticSiteGenerator/
 │   │   └── tom/
 │   └── contact/            # Contact page
 ├── static/                 # Static assets (CSS, images)
-├── public/                 # Generated HTML output
+├── docs/                   # Generated HTML output (GitHub Pages ready)
 ├── template.html           # HTML template
 ├── main.sh                # Build and serve script
+├── build.sh               # Alternative build script
 └── test.sh                # Test runner script
 ```
 
@@ -69,15 +71,27 @@ Generate your site and start the development server:
 
 This will:
 1. Generate HTML files from your Markdown content
-2. Copy static assets to the public directory
+2. Copy static assets to the docs directory
 3. Start a local server at `http://localhost:8888`
 
-### Manual Commands
+### Build Options
 
-**Generate the site**:
+**Option 1 - Full build and serve** (recommended for development):
+```bash
+./main.sh
+```
+
+**Option 2 - Build only** (for deployment):
+```bash
+./build.sh
+```
+
+**Option 3 - Manual build**:
 ```bash
 python3 src/main.py
 ```
+
+### Testing and Development
 
 **Run tests**:
 ```bash
@@ -86,9 +100,9 @@ python3 src/main.py
 python3 -m unittest discover -s src
 ```
 
-**Start development server**:
+**Start development server** (after building):
 ```bash
-cd public && python3 -m http.server 8888
+cd docs && python3 -m http.server 8888
 ```
 
 ## 📝 Content Creation
@@ -119,9 +133,9 @@ are also supported
 
 The generator preserves your content directory structure:
 
-- `content/index.md` → `public/index.html`
-- `content/blog/post/index.md` → `public/blog/post/index.html`
-- `content/about.md` → `public/about.html`
+- `content/index.md` → `docs/index.html`
+- `content/blog/post/index.md` → `docs/blog/post/index.html`
+- `content/about.md` → `docs/about.html`
 
 ### Supported Markdown Features
 
@@ -158,11 +172,33 @@ Edit `template.html` to customize the page structure:
 
 ### Styling
 
-Add your CSS to `static/index.css`. The file will be automatically copied to `public/index.css`.
+Add your CSS to `static/index.css`. The file will be automatically copied to `docs/index.css`.
 
 ### Static Assets
 
-Place images, fonts, and other assets in the `static/` directory. They'll be copied to `public/` maintaining the same structure.
+Place images, fonts, and other assets in the `static/` directory. They'll be copied to `docs/` maintaining the same structure.
+
+## 🌐 Deployment
+
+### GitHub Pages
+
+This project is configured for easy GitHub Pages deployment:
+
+1. **Push your changes** to your GitHub repository
+2. **Enable GitHub Pages** in your repository settings
+3. **Set source** to "Deploy from a branch"
+4. **Select branch** `main` and folder `/docs`
+5. **Your site will be live** at `https://yourusername.github.io/repository-name`
+
+The `docs/` directory contains all the generated HTML files and assets needed for GitHub Pages.
+
+### Other Hosting Platforms
+
+You can deploy the contents of the `docs/` directory to any static hosting service:
+- Netlify
+- Vercel  
+- AWS S3
+- Firebase Hosting
 
 ## 🏗 Architecture
 
@@ -181,7 +217,7 @@ Place images, fonts, and other assets in the `static/` directory. They'll be cop
 3. **HTML Generation**: Creates HTML nodes from parsed content
 4. **Template Application**: Injects content into HTML template
 5. **File Output**: Writes HTML files maintaining directory structure
-6. **Asset Copying**: Copies static files to output directory
+6. **Asset Copying**: Copies static files to docs directory
 
 ## 🧪 Testing
 
